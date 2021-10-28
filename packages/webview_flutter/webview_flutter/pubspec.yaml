@@ -21,20 +21,11 @@ dependencies:
   flutter:
     sdk: flutter
   webview_flutter_platform_interface:
-    git:
-      url: https://github.com/SpectoraSoftware/plugins
-      ref: 138013894069618f8e69923567ea14e6f25efcc0
-      path: packages/webview_flutter/webview_flutter_platform_interface
+    path: ../webview_flutter_platform_interface
   webview_flutter_android: 
-    git:
-      url: https://github.com/SpectoraSoftware/plugins
-      ref: 138013894069618f8e69923567ea14e6f25efcc0
-      path: packages/webview_flutter/webview_flutter_android
+    path: ../webview_flutter_android
   webview_flutter_wkwebview: 
-    git:
-      url: https://github.com/SpectoraSoftware/plugins
-      ref: 138013894069618f8e69923567ea14e6f25efcc0
-      path: packages/webview_flutter/webview_flutter_wkwebview
+    path: ../webview_flutter_wkwebview
 
 dev_dependencies:
   flutter_driver:
