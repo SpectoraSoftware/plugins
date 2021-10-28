@@ -495,6 +495,14 @@ class WebViewController {
     return _webViewPlatformController.loadUrl(url, headers);
   }
 
+  /// Loads the specified file.
+  ///
+  /// `url` must not be null.
+  Future<void> loadAssetFile(String url) async {
+    assert(url != null);
+    return _webViewPlatformController.loadAssetFile(url);
+  }
+
   /// Accessor to the current URL that the WebView is displaying.
   ///
   /// If [WebView.initialUrl] was never specified, returns `null`.

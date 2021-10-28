@@ -116,7 +116,11 @@
 
     NSString* initialUrl = args[@"initialUrl"];
     if ([initialUrl isKindOfClass:[NSString class]]) {
-      [self loadUrl:initialUrl];
+      if ([initialUrl rangeOfString:@"://"].location == NSNotFound) {
+        [self loadAssetFile:initialUrl];
+      } else {
+        [self loadUrl:initialUrl];
+      }
     }
   }
   return self;
@@ -137,6 +141,8 @@
     [self onUpdateSettings:call result:result];
   } else if ([[call method] isEqualToString:@"loadUrl"]) {
     [self onLoadUrl:call result:result];
+  } else if ([[call method] isEqualToString:@"loadAssetFile"]) {
+    [self onLoadAssetFile:call result:result];
   } else if ([[call method] isEqualToString:@"canGoBack"]) {
     [self onCanGoBack:call result:result];
   } else if ([[call method] isEqualToString:@"canGoForward"]) {
@@ -187,6 +193,17 @@
         errorWithCode:@"loadUrl_failed"
               message:@"Failed parsing the URL"
               details:[NSString stringWithFormat:@"Request was: '%@'", [call arguments]]]);
+  } else {
+    result(nil);
+  }
+}
+
+- (void)onLoadAssetFile:(FlutterMethodCall*)call result:(FlutterResult)result {
+  NSString* url = [call arguments];
+  if (![self loadAssetFile:url]) {
+    result([FlutterError errorWithCode:@"loadAssetFile_failed"
+                               message:@"Failed parsing the URL"
+                               details:[NSString stringWithFormat:@"URL was: '%@'", url]]);
   } else {
     result(nil);
   }
@@ -450,6 +467,20 @@
   NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:nsUrl];
   [request setAllHTTPHeaderFields:headers];
   [_webView loadRequest:request];
+  return true;
+}
+
+- (bool)loadAssetFile:(NSString*)url {
+  NSString* key = [_registrar lookupKeyForAsset:url];
+  NSURL* nsUrl = [[NSBundle mainBundle] URLForResource:key withExtension:nil];
+  if (!nsUrl) {
+    return false;
+  }
+  if (@available(iOS 9.0, *)) {
+    [_webView loadFileURL:nsUrl allowingReadAccessToURL:[NSURL URLWithString:@"file:///"]];
+  } else {
+    return false;
+  }
   return true;
 }
 
