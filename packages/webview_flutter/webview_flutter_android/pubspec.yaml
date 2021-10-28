@@ -19,7 +19,11 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter_platform_interface: ^1.2.0
+  webview_flutter_platform_interface:
+    git:
+      url: https://github.com/SpectoraSoftware/plugins
+      ref: 138013894069618f8e69923567ea14e6f25efcc0
+      path: packages/webview_flutter/webview_flutter_platform_interface
 
 dev_dependencies:
   flutter_driver:
